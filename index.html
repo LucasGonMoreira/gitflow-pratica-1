@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DoTask — TaskFlow</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- Background decoration -->
+  <div class="bg-orb bg-orb--1"></div>
+  <div class="bg-orb bg-orb--2"></div>
+  <div class="bg-orb bg-orb--3"></div>
+
+  <div class="layout">
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="sidebar__brand">
+        <span class="brand-icon">✦</span>
+        <span class="brand-name">DoTask</span>
+      </div>
+
+      <nav class="sidebar__nav">
+        <a href="#" class="nav-item nav-item--active">
+          <span class="nav-item__icon">⊞</span>
+          <span>Visão Geral</span>
+        </a>
+        <a href="#" class="nav-item">
+          <span class="nav-item__icon">◎</span>
+          <span>Minhas Tarefas</span>
+        </a>
+        <a href="#" class="nav-item">
+          <span class="nav-item__icon">◈</span>
+          <span>Projetos</span>
+        </a>
+        <a href="#" class="nav-item">
+          <span class="nav-item__icon">◷</span>
+          <span>Calendário</span>
+        </a>
+        <a href="#" class="nav-item">
+          <span class="nav-item__icon">◬</span>
+          <span>Relatórios</span>
+        </a>
+      </nav>
+
+      <div class="sidebar__footer">
+        <div class="user-card">
+          <div class="user-card__avatar">CC</div>
+          <div class="user-card__info">
+            <span class="user-card__name">Claude Code</span>
+            <span class="user-card__role">Desenvolvedor</span>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main content -->
+    <main class="main">
+
+      <!-- Header -->
+      <header class="header">
+        <div class="header__left">
+          <p class="header__eyebrow">Quinta-feira, 14 de Maio</p>
+          <h1 class="header__title">Bom dia, Claude <span class="wave">👋</span></h1>
+        </div>
+        <div class="header__actions">
+          <button class="btn-icon" aria-label="Notificações">
+            <span>🔔</span>
+            <span class="badge">2</span>
+          </button>
+          <button class="btn-primary">+ Nova Tarefa</button>
+        </div>
+      </header>
+
+      <!-- Stats bar -->
+      <section class="stats-bar" aria-label="Resumo">
+        <div class="stat-card">
+          <span class="stat-card__value">2</span>
+          <span class="stat-card__label">Total</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-card__value">1</span>
+          <span class="stat-card__label">Em progresso</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-card__value">0</span>
+          <span class="stat-card__label">Concluídas hoje</span>
+        </div>
+        <div class="stat-card stat-card--accent">
+          <span class="stat-card__value">50%</span>
+          <span class="stat-card__label">Progresso geral</span>
+          <div class="stat-card__bar">
+            <div class="stat-card__bar-fill" style="width: 50%"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Task board -->
+      <section class="board">
+
+        <!-- Column: Pendente -->
+        <div class="column">
+          <div class="column__header">
+            <div class="column__title-group">
+              <span class="column__dot column__dot--pending"></span>
+              <h2 class="column__title">Pendente</h2>
+              <span class="column__count">1</span>
+            </div>
+          </div>
+
+          <div class="task-list">
+            <!-- Task 1 -->
+            <article class="task-card task-card--pending">
+              <div class="task-card__top">
+                <span class="task-tag task-tag--design">Design</span>
+                <button class="task-menu" aria-label="Mais opções">⋯</button>
+              </div>
+              <h3 class="task-card__title">Redesenhar tela de login</h3>
+              <p class="task-card__desc">
+                Atualizar o fluxo de autenticação com novo sistema de design,
+                incluindo suporte a modo escuro e acessibilidade WCAG 2.1.
+              </p>
+              <div class="task-card__meta">
+                <div class="task-card__assignees">
+                  <div class="avatar">AM</div>
+                  <div class="avatar">RK</div>
+                </div>
+                <div class="task-card__due">
+                  <span class="due-icon">◷</span>
+                  <span>18 Mai</span>
+                </div>
+              </div>
+              <div class="task-card__progress">
+                <div class="progress-bar">
+                  <div class="progress-bar__fill" style="width: 30%"></div>
+                </div>
+                <span class="progress-label">30%</span>
+              </div>
+            </article>
+          </div>
+        </div>
+
+        <!-- Column: Em Progresso -->
+        <div class="column column--active">
+          <div class="column__header">
+            <div class="column__title-group">
+              <span class="column__dot column__dot--progress"></span>
+              <h2 class="column__title">Em Progresso</h2>
+              <span class="column__count">1</span>
+            </div>
+          </div>
+
+          <div class="task-list">
+            <!-- Task 2 -->
+            <article class="task-card task-card--progress">
+              <div class="task-card__top">
+                <span class="task-tag task-tag--dev">Dev</span>
+                <button class="task-menu" aria-label="Mais opções">⋯</button>
+              </div>
+              <h3 class="task-card__title">Integrar API de pagamentos</h3>
+              <p class="task-card__desc">
+                Conectar o gateway Stripe ao checkout, implementar webhooks
+                e testes de unidade para coberturas críticas do fluxo.
+              </p>
+              <div class="task-card__meta">
+                <div class="task-card__assignees">
+                  <div class="avatar">CC</div>
+                </div>
+                <div class="task-card__due">
+                  <span class="due-icon">◷</span>
+                  <span>22 Mai</span>
+                </div>
+              </div>
+              <div class="task-card__progress">
+                <div class="progress-bar">
+                  <div class="progress-bar__fill" style="width: 65%"></div>
+                </div>
+                <span class="progress-label">65%</span>
+              </div>
+            </article>
+          </div>
+        </div>
+
+        <!-- Column: Concluído -->
+        <div class="column">
+          <div class="column__header">
+            <div class="column__title-group">
+              <span class="column__dot column__dot--done"></span>
+              <h2 class="column__title">Concluído</h2>
+              <span class="column__count">0</span>
+            </div>
+          </div>
+
+          <div class="task-list task-list--empty">
+            <div class="empty-state">
+              <span class="empty-state__icon">✦</span>
+              <p>Nenhuma tarefa concluída ainda.</p>
+            </div>
+          </div>
+        </div>
+
+      </section>
+    </main>
+  </div>
+
+</body>
+</html>
