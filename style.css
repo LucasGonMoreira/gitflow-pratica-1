@@ -339,6 +339,90 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   transition: width 0.8s ease;
 }
 
+/* --- Filters ----------------------------------------------- */
+.filters {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  animation: fadeUp 0.58s ease 0.11s both;
+}
+
+.filters__label {
+  font-size: 0.72rem;
+  color: var(--clr-text-3);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.filters__group {
+  display: flex;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+}
+
+.filter-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.35rem 0.85rem;
+  border-radius: 50px;
+  font-size: 0.78rem;
+  font-weight: 400;
+  color: var(--clr-text-2);
+  background: var(--clr-surface);
+  border: 1px solid var(--clr-border);
+  cursor: pointer;
+  transition: background 0.18s, color 0.18s, border-color 0.18s;
+}
+.filter-btn:hover {
+  background: var(--clr-surface-2);
+  color: var(--clr-text-1);
+  border-color: rgba(99, 130, 180, 0.28);
+}
+.filter-btn--active {
+  background: var(--clr-primary-dim);
+  color: var(--clr-primary);
+  border-color: rgba(79, 142, 247, 0.35);
+  font-weight: 500;
+}
+
+/* Filter badges */
+.filter-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 5px;
+  border-radius: 99px;
+  font-size: 0.62rem;
+  font-weight: 700;
+  line-height: 1;
+}
+.filter-badge--all {
+  background: rgba(99, 130, 180, 0.18);
+  color: var(--clr-text-2);
+}
+.filter-badge--pending {
+  background: rgba(245, 158, 11, 0.18);
+  color: var(--clr-pending);
+}
+.filter-badge--progress {
+  background: rgba(79, 142, 247, 0.18);
+  color: var(--clr-progress);
+}
+.filter-badge--done {
+  background: rgba(52, 211, 153, 0.18);
+  color: var(--clr-done);
+}
+
+.filter-btn--active .filter-badge--all {
+  background: rgba(79, 142, 247, 0.25);
+  color: var(--clr-primary);
+}
+
 /* --- Board -------------------------------------------------- */
 .board {
   display: grid;
@@ -358,9 +442,16 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   flex-direction: column;
   gap: 1rem;
   min-height: 300px;
+  transition: border-color 0.2s, background 0.2s;
 }
 .column--active {
   border-color: rgba(79, 142, 247, 0.2);
+}
+
+/* Drag-over state */
+.column--drag-over {
+  border-color: rgba(79, 142, 247, 0.55);
+  background: rgba(79, 142, 247, 0.05);
 }
 
 .column__header {
@@ -387,14 +478,29 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   font-weight: 600;
   letter-spacing: 0.01em;
 }
+
+/* Column count badges — colored by status */
 .column__count {
   font-size: 0.72rem;
-  font-weight: 600;
-  background: var(--clr-surface-2);
-  border: 1px solid var(--clr-border);
-  color: var(--clr-text-3);
+  font-weight: 700;
   padding: 0.15rem 0.55rem;
   border-radius: 99px;
+  transition: all 0.2s;
+}
+.column__count--pending {
+  background: rgba(245, 158, 11, 0.15);
+  border: 1px solid rgba(245, 158, 11, 0.3);
+  color: var(--clr-pending);
+}
+.column__count--progress {
+  background: rgba(79, 142, 247, 0.15);
+  border: 1px solid rgba(79, 142, 247, 0.3);
+  color: var(--clr-progress);
+}
+.column__count--done {
+  background: rgba(52, 211, 153, 0.15);
+  border: 1px solid rgba(52, 211, 153, 0.3);
+  color: var(--clr-done);
 }
 
 /* --- Task List --------------------------------------------- */
@@ -402,10 +508,7 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   display: flex;
   flex-direction: column;
   gap: 0.85rem;
-}
-.task-list--empty {
-  flex: 1;
-  justify-content: center;
+  min-height: 60px;
 }
 
 /* --- Task Card --------------------------------------------- */
@@ -417,7 +520,9 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
-  transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s;
+  cursor: grab;
+  transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s, opacity 0.2s;
+  animation: slideIn 0.25s ease both;
 }
 .task-card:hover {
   transform: translateY(-2px);
@@ -425,11 +530,28 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   box-shadow: 0 8px 32px rgba(0,0,0,0.25);
 }
 
-.task-card--progress {
+/* Dragging state */
+.task-card--dragging {
+  opacity: 0.35;
+  transform: scale(0.97);
+  cursor: grabbing;
+}
+.task-card--drag-ghost {
+  opacity: 0.55;
+  box-shadow: 0 12px 40px rgba(0,0,0,0.4);
+  transform: rotate(1.5deg) scale(1.02);
+  cursor: grabbing;
+}
+
+.task-card[data-status="progress"] {
   border-left: 3px solid var(--clr-primary);
 }
-.task-card--pending {
+.task-card[data-status="pending"] {
   border-left: 3px solid var(--clr-pending);
+}
+.task-card[data-status="done"] {
+  border-left: 3px solid var(--clr-done);
+  opacity: 0.75;
 }
 
 .task-card__top {
@@ -455,6 +577,16 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   background: rgba(79, 142, 247, 0.12);
   color: var(--clr-accent);
   border: 1px solid rgba(79, 142, 247, 0.2);
+}
+.task-tag--qa {
+  background: rgba(52, 211, 153, 0.12);
+  color: var(--clr-done);
+  border: 1px solid rgba(52, 211, 153, 0.2);
+}
+.task-tag--pm {
+  background: rgba(245, 158, 11, 0.12);
+  color: var(--clr-pending);
+  border: 1px solid rgba(245, 158, 11, 0.2);
 }
 
 .task-menu {
@@ -489,7 +621,6 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 
 .task-card__assignees {
   display: flex;
-  gap: -4px;
 }
 .avatar {
   width: 26px; height: 26px;
@@ -539,6 +670,11 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   text-align: right;
 }
 
+/* Done card progress bar */
+.task-card[data-status="done"] .progress-bar__fill {
+  background: linear-gradient(90deg, var(--clr-teal), var(--clr-done));
+}
+
 /* --- Empty State -------------------------------------------- */
 .empty-state {
   display: flex;
@@ -550,10 +686,22 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   color: var(--clr-text-3);
   font-size: 0.8rem;
   text-align: center;
+  border: 1px dashed rgba(99, 130, 180, 0.12);
+  border-radius: var(--radius-sm);
 }
 .empty-state__icon {
   font-size: 1.5rem;
   opacity: 0.3;
+}
+
+/* Drop placeholder inside list */
+.drop-placeholder {
+  height: 80px;
+  border: 1.5px dashed rgba(79, 142, 247, 0.4);
+  border-radius: var(--radius-sm);
+  background: rgba(79, 142, 247, 0.05);
+  pointer-events: none;
+  animation: pulse 1s ease infinite alternate;
 }
 
 /* --- Animações ---------------------------------------------- */
@@ -566,6 +714,16 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   0%, 100% { transform: rotate(0deg); }
   25%       { transform: rotate(18deg); }
   75%       { transform: rotate(-10deg); }
+}
+
+@keyframes slideIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes pulse {
+  from { border-color: rgba(79, 142, 247, 0.3); background: rgba(79, 142, 247, 0.03); }
+  to   { border-color: rgba(79, 142, 247, 0.6); background: rgba(79, 142, 247, 0.08); }
 }
 
 /* --- Responsivo --------------------------------------------- */
@@ -611,10 +769,17 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   .stats-bar {
     grid-template-columns: repeat(2, 1fr);
   }
+
+  .filters {
+    flex-direction: column;
+    align-items: flex-start;
+  }
 }
 
 @media (max-width: 480px) {
   .stats-bar { grid-template-columns: 1fr 1fr; }
   .header { flex-direction: column; align-items: flex-start; }
   .header__title { font-size: 1.5rem; }
+  .filters__group { gap: 0.3rem; }
+  .filter-btn { font-size: 0.72rem; padding: 0.3rem 0.65rem; }
 }
