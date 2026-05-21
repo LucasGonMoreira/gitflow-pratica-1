@@ -208,5 +208,57 @@
     </main>
   </div>
 
+  <!-- Modal: Nova Tarefa -->
+  <div class="modal-overlay" id="modalOverlay" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <div class="modal" id="modal">
+      <div class="modal__header">
+        <h2 class="modal__title" id="modalTitle">Nova Tarefa</h2>
+        <button class="modal__close" id="modalClose" aria-label="Fechar modal">✕</button>
+      </div>
+
+      <div class="modal__body">
+        <div class="form-group">
+          <label class="form-label" for="taskTitle">Título <span class="form-required">*</span></label>
+          <input class="form-input" type="text" id="taskTitle" placeholder="Ex: Redesenhar tela de onboarding" maxlength="80" autocomplete="off" />
+          <span class="form-error" id="taskTitleError">O título é obrigatório.</span>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="taskDesc">Descrição</label>
+          <textarea class="form-input form-textarea" id="taskDesc" rows="3" placeholder="Descreva brevemente o que precisa ser feito…" maxlength="300"></textarea>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label" for="taskTag">Categoria</label>
+            <select class="form-input form-select" id="taskTag">
+              <option value="dev">Dev</option>
+              <option value="design">Design</option>
+              <option value="marketing">Marketing</option>
+              <option value="qa">QA</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="taskDue">Prazo</label>
+            <input class="form-input" type="date" id="taskDue" />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="taskAssignee">Responsável (iniciais)</label>
+          <input class="form-input" type="text" id="taskAssignee" placeholder="Ex: AM" maxlength="3" style="text-transform:uppercase" autocomplete="off" />
+        </div>
+      </div>
+
+      <div class="modal__footer">
+        <button class="btn-ghost" id="modalCancel">Cancelar</button>
+        <button class="btn-primary" id="modalSubmit">Criar Tarefa</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+
 </body>
 </html>
