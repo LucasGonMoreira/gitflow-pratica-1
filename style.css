@@ -780,6 +780,215 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   .stats-bar { grid-template-columns: 1fr 1fr; }
   .header { flex-direction: column; align-items: flex-start; }
   .header__title { font-size: 1.5rem; }
+}
+/* --- Modal -------------------------------------------------- */
+.modal-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  background: rgba(5, 9, 20, 0.75);
+  backdrop-filter: blur(6px);
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+}
+.modal-overlay--open {
+  display: flex;
+}
+
+.modal {
+  background: var(--clr-surface);
+  border: 1px solid var(--clr-border);
+  border-radius: var(--radius);
+  width: 100%;
+  max-width: 480px;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  opacity: 0;
+  transform: translateY(20px) scale(0.97);
+  transition: opacity 0.25s ease, transform 0.25s ease;
+}
+.modal--open {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+.modal__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.4rem 1.5rem 1rem;
+  border-bottom: 1px solid var(--clr-border-soft);
+}
+.modal__title {
+  font-family: var(--font-display);
+  font-size: 1.1rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+.modal__close {
+  width: 30px; height: 30px;
+  border-radius: 50%;
+  background: var(--clr-surface-2);
+  border: 1px solid var(--clr-border);
+  color: var(--clr-text-2);
+  font-size: 0.8rem;
+  display: flex; align-items: center; justify-content: center;
+  transition: background 0.15s, color 0.15s;
+}
+.modal__close:hover {
+  background: var(--clr-surface-3);
+  color: var(--clr-text-1);
+}
+
+.modal__body {
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+  padding: 1.25rem 1.5rem;
+}
+
+.modal__footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  padding: 1rem 1.5rem 1.4rem;
+  border-top: 1px solid var(--clr-border-soft);
+}
+
+/* --- Formulário -------------------------------------------- */
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+.form-label {
+  font-size: 0.78rem;
+  font-weight: 500;
+  color: var(--clr-text-2);
+  letter-spacing: 0.02em;
+}
+.form-required {
+  color: var(--clr-primary);
+}
+.form-input {
+  background: var(--clr-surface-2);
+  border: 1px solid var(--clr-border);
+  border-radius: var(--radius-sm);
+  color: var(--clr-text-1);
+  font-family: var(--font-body);
+  font-size: 0.875rem;
+  padding: 0.6rem 0.85rem;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  width: 100%;
+}
+.form-input::placeholder { color: var(--clr-text-3); }
+.form-input:focus {
+  border-color: var(--clr-primary);
+  box-shadow: 0 0 0 3px rgba(79, 142, 247, 0.12);
+}
+.form-input--error {
+  border-color: #f87171 !important;
+  box-shadow: 0 0 0 3px rgba(248, 113, 113, 0.1) !important;
+}
+.form-textarea {
+  resize: vertical;
+  min-height: 72px;
+  line-height: 1.5;
+}
+.form-select {
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' fill='none'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%238da4c8' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.85rem center;
+  padding-right: 2.2rem;
+  cursor: pointer;
+}
+.form-select option { background: #1a2236; }
+.form-error {
+  font-size: 0.72rem;
+  color: #f87171;
+  display: none;
+}
+
+/* --- Botão ghost ------------------------------------------- */
+.btn-ghost {
+  padding: 0.55rem 1.1rem;
+  border-radius: 50px;
+  background: var(--clr-surface-2);
+  border: 1px solid var(--clr-border);
+  color: var(--clr-text-2);
+  font-family: var(--font-body);
+  font-size: 0.875rem;
+  font-weight: 500;
+  transition: background 0.2s, color 0.2s;
+}
+.btn-ghost:hover {
+  background: var(--clr-surface-3);
+  color: var(--clr-text-1);
+}
+
+/* --- Tags extras ------------------------------------------- */
+.task-tag--marketing {
+  background: rgba(45, 212, 191, 0.12);
+  color: var(--clr-teal);
+  border: 1px solid rgba(45, 212, 191, 0.2);
+}
+.task-tag--qa {
+  background: rgba(245, 158, 11, 0.12);
+  color: var(--clr-pending);
+  border: 1px solid rgba(245, 158, 11, 0.2);
+}
+
+/* --- Animação do card novo --------------------------------- */
+.task-card--new {
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 0.35s ease, transform 0.35s ease;
+}
+.task-card--visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* --- Input date -------------------------------------------- */
+input[type="date"]::-webkit-calendar-picker-indicator {
+  filter: invert(0.5) sepia(1) saturate(2) hue-rotate(190deg);
+  cursor: pointer;
+  opacity: 0.6;
+}
+input[type="date"]::-webkit-calendar-picker-indicator:hover {
+  opacity: 1;
+}
+
+/* --- Modal responsivo -------------------------------------- */
+@media (max-width: 520px) {
+  .modal {
+    max-width: 100%;
+    margin: 0;
+    border-radius: var(--radius) var(--radius) 0 0;
+    position: fixed;
+    bottom: 0;
+    left: 0; right: 0;
+    transform: translateY(30px);
+  }
+  .modal--open {
+    transform: translateY(0);
+  }
+  .modal-overlay--open {
+    align-items: flex-end;
+  }
+  .form-row {
+    grid-template-columns: 1fr;
+  }
   .filters__group { gap: 0.3rem; }
   .filter-btn { font-size: 0.72rem; padding: 0.3rem 0.65rem; }
 }
