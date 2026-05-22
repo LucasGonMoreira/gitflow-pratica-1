@@ -11,7 +11,6 @@
 </head>
 <body>
 
-  <!-- Background decoration -->
   <div class="bg-orb bg-orb--1"></div>
   <div class="bg-orb bg-orb--2"></div>
   <div class="bg-orb bg-orb--3"></div>
@@ -24,7 +23,6 @@
         <span class="brand-icon">✦</span>
         <span class="brand-name">DoTask</span>
       </div>
-
       <nav class="sidebar__nav">
         <a href="#" class="nav-item nav-item--active">
           <span class="nav-item__icon">⊞</span>
@@ -47,7 +45,6 @@
           <span>Relatórios</span>
         </a>
       </nav>
-
       <div class="sidebar__footer">
         <div class="user-card">
           <div class="user-card__avatar">CC</div>
@@ -59,10 +56,9 @@
       </div>
     </aside>
 
-    <!-- Main content -->
+    <!-- Main -->
     <main class="main">
 
-      <!-- Header -->
       <header class="header">
         <div class="header__left">
           <p class="header__eyebrow">Quinta-feira, 14 de Maio</p>
@@ -73,140 +69,153 @@
             <span>🔔</span>
             <span class="badge">2</span>
           </button>
-          <button class="btn-primary">+ Nova Tarefa</button>
+          <button class="btn-primary" id="addTaskBtn">+ Nova Tarefa</button>
         </div>
       </header>
 
-      <!-- Stats bar -->
       <section class="stats-bar" aria-label="Resumo">
         <div class="stat-card">
-          <span class="stat-card__value">2</span>
+          <span class="stat-card__value" id="statTotal">0</span>
           <span class="stat-card__label">Total</span>
         </div>
         <div class="stat-card">
-          <span class="stat-card__value">1</span>
+          <span class="stat-card__value" id="statProg">0</span>
           <span class="stat-card__label">Em progresso</span>
         </div>
         <div class="stat-card">
-          <span class="stat-card__value">0</span>
-          <span class="stat-card__label">Concluídas hoje</span>
+          <span class="stat-card__value" id="statDone">0</span>
+          <span class="stat-card__label">Concluídas</span>
         </div>
         <div class="stat-card stat-card--accent">
-          <span class="stat-card__value">50%</span>
+          <span class="stat-card__value" id="statPct">0%</span>
           <span class="stat-card__label">Progresso geral</span>
           <div class="stat-card__bar">
-            <div class="stat-card__bar-fill" style="width: 50%"></div>
+            <div class="stat-card__bar-fill" id="statBar" style="width: 0%"></div>
           </div>
         </div>
       </section>
 
-      <!-- Task board -->
+      <div class="filters">
+        <span class="filters__label">Filtrar por</span>
+        <div class="filters__group">
+          <button class="filter-btn filter-btn--active" data-filter="all">
+            Todas <span class="filter-badge filter-badge--all" id="badge-all">0</span>
+          </button>
+          <button class="filter-btn" data-filter="pending">
+            Pendente <span class="filter-badge filter-badge--pending" id="badge-pending">0</span>
+          </button>
+          <button class="filter-btn" data-filter="progress">
+            Em Progresso <span class="filter-badge filter-badge--progress" id="badge-progress">0</span>
+          </button>
+          <button class="filter-btn" data-filter="done">
+            Concluído <span class="filter-badge filter-badge--done" id="badge-done">0</span>
+          </button>
+        </div>
+      </div>
+
       <section class="board">
 
-        <!-- Column: Pendente -->
-        <div class="column">
+        <div class="column" data-col="pending">
           <div class="column__header">
             <div class="column__title-group">
               <span class="column__dot column__dot--pending"></span>
               <h2 class="column__title">Pendente</h2>
-              <span class="column__count">1</span>
+              <span class="column__count column__count--pending" id="colbadge-pending">0</span>
             </div>
           </div>
-
-          <div class="task-list">
-            <!-- Task 1 -->
-            <article class="task-card task-card--pending">
-              <div class="task-card__top">
-                <span class="task-tag task-tag--design">Design</span>
-                <button class="task-menu" aria-label="Mais opções">⋯</button>
-              </div>
-              <h3 class="task-card__title">Redesenhar tela de login</h3>
-              <p class="task-card__desc">
-                Atualizar o fluxo de autenticação com novo sistema de design,
-                incluindo suporte a modo escuro e acessibilidade WCAG 2.1.
-              </p>
-              <div class="task-card__meta">
-                <div class="task-card__assignees">
-                  <div class="avatar">AM</div>
-                  <div class="avatar">RK</div>
-                </div>
-                <div class="task-card__due">
-                  <span class="due-icon">◷</span>
-                  <span>18 Mai</span>
-                </div>
-              </div>
-              <div class="task-card__progress">
-                <div class="progress-bar">
-                  <div class="progress-bar__fill" style="width: 30%"></div>
-                </div>
-                <span class="progress-label">30%</span>
-              </div>
-            </article>
-          </div>
+          <div class="task-list" id="list-pending"></div>
         </div>
 
-        <!-- Column: Em Progresso -->
-        <div class="column column--active">
+        <div class="column column--active" data-col="progress">
           <div class="column__header">
             <div class="column__title-group">
               <span class="column__dot column__dot--progress"></span>
               <h2 class="column__title">Em Progresso</h2>
-              <span class="column__count">1</span>
+              <span class="column__count column__count--progress" id="colbadge-progress">0</span>
             </div>
           </div>
-
-          <div class="task-list">
-            <!-- Task 2 -->
-            <article class="task-card task-card--progress">
-              <div class="task-card__top">
-                <span class="task-tag task-tag--dev">Dev</span>
-                <button class="task-menu" aria-label="Mais opções">⋯</button>
-              </div>
-              <h3 class="task-card__title">Integrar API de pagamentos</h3>
-              <p class="task-card__desc">
-                Conectar o gateway Stripe ao checkout, implementar webhooks
-                e testes de unidade para coberturas críticas do fluxo.
-              </p>
-              <div class="task-card__meta">
-                <div class="task-card__assignees">
-                  <div class="avatar">CC</div>
-                </div>
-                <div class="task-card__due">
-                  <span class="due-icon">◷</span>
-                  <span>22 Mai</span>
-                </div>
-              </div>
-              <div class="task-card__progress">
-                <div class="progress-bar">
-                  <div class="progress-bar__fill" style="width: 65%"></div>
-                </div>
-                <span class="progress-label">65%</span>
-              </div>
-            </article>
-          </div>
+          <div class="task-list" id="list-progress"></div>
         </div>
 
-        <!-- Column: Concluído -->
-        <div class="column">
+        <div class="column" data-col="done">
           <div class="column__header">
             <div class="column__title-group">
               <span class="column__dot column__dot--done"></span>
               <h2 class="column__title">Concluído</h2>
-              <span class="column__count">0</span>
+              <span class="column__count column__count--done" id="colbadge-done">0</span>
             </div>
           </div>
-
-          <div class="task-list task-list--empty">
-            <div class="empty-state">
-              <span class="empty-state__icon">✦</span>
-              <p>Nenhuma tarefa concluída ainda.</p>
-            </div>
-          </div>
+          <div class="task-list" id="list-done"></div>
         </div>
 
       </section>
     </main>
   </div>
 
+  <!-- Modal -->
+  <div class="modal-overlay" id="modalOverlay">
+    <div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="modalHeading">
+      <div class="modal__header">
+        <h2 class="modal__title" id="modalHeading">Nova Tarefa</h2>
+        <button class="modal__close" id="modalClose" aria-label="Fechar">✕</button>
+      </div>
+      <div class="modal__body">
+        <div class="form-group">
+          <label class="form-label" for="taskTitle">
+            Título <span class="form-required">*</span>
+          </label>
+          <input
+            class="form-input"
+            id="taskTitle"
+            type="text"
+            placeholder="Ex: Revisar protótipo de onboarding"
+            autocomplete="off"
+          />
+          <span class="form-error" id="taskTitleError">O título é obrigatório.</span>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="taskDesc">Descrição</label>
+          <textarea
+            class="form-input form-textarea"
+            id="taskDesc"
+            placeholder="Detalhe o que precisa ser feito…"
+          ></textarea>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label" for="taskTag">Tag</label>
+            <select class="form-input form-select" id="taskTag">
+              <option value="dev">Dev</option>
+              <option value="design">Design</option>
+              <option value="marketing">Marketing</option>
+              <option value="qa">QA</option>
+              <option value="pm">PM</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="taskDue">Prazo</label>
+            <input class="form-input" id="taskDue" type="date" />
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="taskAssignee">Responsável (iniciais)</label>
+          <input
+            class="form-input"
+            id="taskAssignee"
+            type="text"
+            placeholder="Ex: AM"
+            maxlength="3"
+            autocomplete="off"
+          />
+        </div>
+      </div>
+      <div class="modal__footer">
+        <button class="btn-ghost" id="modalCancel">Cancelar</button>
+        <button class="btn-primary" id="modalSubmit">Criar Tarefa</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
 </body>
 </html>
