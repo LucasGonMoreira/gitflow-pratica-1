@@ -14,38 +14,48 @@ const TAG_CONFIG = {
 
 const MONTHS = ['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'];
 
-/* ── Estado inicial das tarefas ────────────── */
-const tasks = [
-  {
-    id: 1, status: 'pending', tag: 'design', tagLabel: 'Design',
-    title: 'Redesenhar tela de login',
-    desc: 'Atualizar o fluxo de autenticação com novo sistema de design, incluindo suporte a modo escuro e acessibilidade WCAG 2.1.',
-    assignees: ['AM', 'RK'], due: '18 Mai', progress: 30,
-  },
-  {
-    id: 2, status: 'progress', tag: 'dev', tagLabel: 'Dev',
-    title: 'Integrar API de pagamentos',
-    desc: 'Conectar o gateway Stripe ao checkout, implementar webhooks e testes de unidade para coberturas críticas do fluxo.',
-    assignees: ['CC'], due: '22 Mai', progress: 65,
-  },
-  {
-    id: 3, status: 'progress', tag: 'qa', tagLabel: 'QA',
-    title: 'Testes de regressão v2.4',
-    desc: 'Validar todos os fluxos críticos após a atualização do motor de renderização. Foco em mobile e Safari.',
-    assignees: ['LM', 'JP'], due: '25 Mai', progress: 40,
-  },
-  {
-    id: 4, status: 'done', tag: 'pm', tagLabel: 'PM',
-    title: 'Planejamento do sprint 12',
-    desc: 'Definir escopo, prioridades e distribuição de capacidade para o próximo ciclo de duas semanas.',
-    assignees: ['CC', 'AM'], due: '15 Mai', progress: 100,
-  },
+/* ── Dados padrão (usados apenas na primeira vez) ── */
+const DEFAULT_TASKS = [
+  
 ];
 
+/* ══════════════════════════════════════════════
+   PERSISTÊNCIA — localStorage
+══════════════════════════════════════════════ */
+
+const LS_TASKS  = 'dotask:tasks';
+const LS_NEXTID = 'dotask:nextId';
+
+function saveTasks() {
+  try {
+    localStorage.setItem(LS_TASKS,  JSON.stringify(tasks));
+    localStorage.setItem(LS_NEXTID, nextId);
+  } catch (e) {
+    console.warn('DoTask: não foi possível salvar no localStorage.', e);
+  }
+}
+
+function loadTasks() {
+  try {
+    const raw = localStorage.getItem(LS_TASKS);
+    return raw ? JSON.parse(raw) : null;
+  } catch (e) {
+    console.warn('DoTask: dados corrompidos no localStorage, usando padrão.', e);
+    return null;
+  }
+}
+
+function loadNextId() {
+  const stored = parseInt(localStorage.getItem(LS_NEXTID), 10);
+  return isNaN(stored) ? 100 : stored;
+}
+
 /* ── Estado da aplicação ───────────────────── */
+const tasks = loadTasks() ?? DEFAULT_TASKS.map(t => ({ ...t }));
+let nextId  = loadNextId();
+
 let activeFilter = 'all';
 let dragSrcId    = null;
-let nextId       = 100;
 
 /* ── Seletores — modal ─────────────────────── */
 const overlay     = document.getElementById('modalOverlay');
@@ -277,6 +287,7 @@ function createCard() {
       });
     }
 
+    saveTasks();
     render();
     setSubmitLoading(false);
     closeModal();
@@ -349,6 +360,7 @@ columns.forEach(col => {
     task.status = newStatus;
     if (newStatus === 'done' && task.progress < 100) task.progress = 100;
 
+    saveTasks();
     render();
   });
 });
