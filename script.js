@@ -1,6 +1,6 @@
 /* =============================================
-   DoTask — TaskFlow | app.js
-   Modal + Board + Filtros + Drag-and-drop
+   DoTask — TaskFlow | script.js
+   Modal + Board + Filtros + Drag-and-drop + Theme Toggle
 ============================================= */
 
 /* ── Configuração de tags ──────────────────── */
@@ -61,9 +61,46 @@ const inputAssign = document.getElementById('taskAssignee');
 const titleError  = document.getElementById('taskTitleError');
 
 /* ── Seletores — board ─────────────────────── */
-const filterBtns = document.querySelectorAll('.filter-btn');
-const columns    = document.querySelectorAll('.column');
-const addTaskBtn = document.getElementById('addTaskBtn');
+const filterBtns  = document.querySelectorAll('.filter-btn');
+const columns     = document.querySelectorAll('.column');
+const addTaskBtn  = document.getElementById('addTaskBtn');
+
+/* ── Seletores — tema ──────────────────────── */
+const themeToggle = document.getElementById('themeToggle');
+
+/* ══════════════════════════════════════════════
+   TEMA DARK / LIGHT
+══════════════════════════════════════════════ */
+
+const THEME_KEY = 'dotask-theme';
+
+function applyTheme(theme) {
+  if (theme === 'light') {
+    document.body.classList.add('theme-light');
+  } else {
+    document.body.classList.remove('theme-light');
+  }
+  localStorage.setItem(THEME_KEY, theme);
+}
+
+function toggleTheme() {
+  const isLight = document.body.classList.contains('theme-light');
+  applyTheme(isLight ? 'dark' : 'light');
+}
+
+function initTheme() {
+  const saved = localStorage.getItem(THEME_KEY);
+  if (saved) {
+    applyTheme(saved);
+  } else {
+    // Respeita a preferência do sistema operacional
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    applyTheme(prefersDark ? 'dark' : 'light');
+  }
+}
+
+themeToggle.addEventListener('click', toggleTheme);
+initTheme();
 
 /* ══════════════════════════════════════════════
    UTILITÁRIOS
