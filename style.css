@@ -3,7 +3,7 @@
    Tema: Moderno, frio, minimalista refinado
 ============================================= */
 
-/* --- Variáveis -------------------------------------------------- */
+/* --- Tema Dark (padrão) ---------------------------------- */
 :root {
   --clr-bg:          #0b0f1a;
   --clr-surface:     #111827;
@@ -26,6 +26,8 @@
   --clr-progress:    #4f8ef7;
   --clr-done:        #34d399;
 
+  --clr-sidebar-bg:  rgba(17, 24, 39, 0.7);
+
   --font-display: 'Syne', sans-serif;
   --font-body:    'DM Sans', sans-serif;
 
@@ -33,6 +35,32 @@
   --radius:    16px;
   --radius-sm: 10px;
   --sidebar-w: 240px;
+}
+
+/* --- Tema Light ------------------------------------------ */
+body.theme-light {
+  --clr-bg:          #f0f4fb;
+  --clr-surface:     #ffffff;
+  --clr-surface-2:   #e8eef8;
+  --clr-surface-3:   #dde5f5;
+  --clr-border:      rgba(79, 120, 180, 0.15);
+  --clr-border-soft: rgba(79, 120, 180, 0.09);
+
+  --clr-primary:     #2f6fe8;
+  --clr-primary-dim: rgba(47, 111, 232, 0.1);
+  --clr-accent:      #0ea5e9;
+  --clr-teal:        #0d9488;
+  --clr-violet:      #6366f1;
+
+  --clr-text-1:      #0f172a;
+  --clr-text-2:      #3d5a8a;
+  --clr-text-3:      #7a96c0;
+
+  --clr-pending:     #d97706;
+  --clr-progress:    #2f6fe8;
+  --clr-done:        #059669;
+
+  --clr-sidebar-bg:  rgba(255, 255, 255, 0.85);
 }
 
 /* --- Reset -------------------------------------------------- */
@@ -45,6 +73,7 @@ body {
   min-height: 100vh;
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
+  transition: background-color 0.35s ease, color 0.35s ease;
 }
 a { text-decoration: none; color: inherit; }
 button { font-family: inherit; cursor: pointer; border: none; background: none; }
@@ -57,7 +86,9 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   pointer-events: none;
   z-index: 0;
   opacity: 0.18;
+  transition: opacity 0.35s ease;
 }
+body.theme-light .bg-orb { opacity: 0.12; }
 .bg-orb--1 {
   width: 520px; height: 520px;
   top: -120px; left: -100px;
@@ -74,6 +105,7 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   background: radial-gradient(circle, #818cf8, transparent 70%);
   opacity: 0.09;
 }
+body.theme-light .bg-orb--3 { opacity: 0.06; }
 
 /* --- Layout ------------------------------------------------- */
 .layout {
@@ -90,13 +122,14 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   flex-direction: column;
   gap: var(--gap);
   padding: 2rem 1.25rem;
-  background: rgba(17, 24, 39, 0.7);
+  background: var(--clr-sidebar-bg);
   border-right: 1px solid var(--clr-border);
   backdrop-filter: blur(20px);
   position: sticky;
   top: 0;
   height: 100vh;
   overflow-y: auto;
+  transition: background 0.35s ease, border-color 0.35s ease;
 }
 .sidebar__brand {
   display: flex;
@@ -139,6 +172,7 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   background: linear-gradient(135deg, var(--clr-primary), var(--clr-violet));
   display: flex; align-items: center; justify-content: center;
   font-size: 0.7rem; font-weight: 700; letter-spacing: 0.03em;
+  color: #fff;
   flex-shrink: 0;
 }
 .user-card__info { display: flex; flex-direction: column; gap: 0.1rem; }
@@ -180,27 +214,53 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 .wave { display: inline-block; animation: wave 2s ease infinite; }
 .header__actions { display: flex; align-items: center; gap: 0.75rem; }
 
-.btn-icon {
+/* --- Theme Toggle ------------------------------------------ */
+.btn-theme-toggle {
   position: relative;
-  width: 40px; height: 40px;
-  border-radius: 50%;
+  width: 64px;
+  height: 32px;
+  border-radius: 99px;
   background: var(--clr-surface-2);
   border: 1px solid var(--clr-border);
-  display: flex; align-items: center; justify-content: center;
-  font-size: 1rem;
-  transition: background 0.2s;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 7px;
+  transition: background 0.35s ease, border-color 0.35s ease;
+  flex-shrink: 0;
 }
-.btn-icon:hover { background: var(--clr-surface-3); }
-.badge {
+.btn-theme-toggle:hover { border-color: var(--clr-primary); }
+.theme-toggle__icon {
+  font-size: 0.85rem;
+  line-height: 1;
+  z-index: 1;
+  transition: opacity 0.25s ease;
+  pointer-events: none;
+}
+.theme-toggle__icon--dark  { opacity: 1; }
+.theme-toggle__icon--light { opacity: 0.4; }
+body.theme-light .theme-toggle__icon--dark  { opacity: 0.4; }
+body.theme-light .theme-toggle__icon--light { opacity: 1; }
+.theme-toggle__knob {
   position: absolute;
-  top: 4px; right: 4px;
-  width: 16px; height: 16px;
+  top: 3px;
+  left: 3px;
+  width: 24px;
+  height: 24px;
   border-radius: 50%;
-  background: var(--clr-primary);
-  font-size: 0.6rem; font-weight: 700;
-  display: flex; align-items: center; justify-content: center;
-  border: 2px solid var(--clr-bg);
+  background: linear-gradient(135deg, var(--clr-primary), var(--clr-accent));
+  box-shadow: 0 2px 8px rgba(79, 142, 247, 0.4);
+  transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1), background 0.35s ease;
+  pointer-events: none;
 }
+body.theme-light .theme-toggle__knob {
+  transform: translateX(32px);
+  background: linear-gradient(135deg, #f59e0b, #fbbf24);
+  box-shadow: 0 2px 8px rgba(245, 158, 11, 0.4);
+}
+
+/* --- Btn Primary ------------------------------------------- */
 .btn-primary {
   padding: 0.55rem 1.2rem;
   border-radius: 50px;
@@ -233,7 +293,7 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   border-radius: var(--radius);
   padding: 1.1rem 1.25rem;
   display: flex; flex-direction: column; gap: 0.2rem;
-  transition: border-color 0.2s;
+  transition: border-color 0.2s, background 0.35s ease;
 }
 .stat-card:hover { border-color: rgba(99, 130, 180, 0.25); }
 .stat-card--accent { background: var(--clr-primary-dim); border-color: rgba(79, 142, 247, 0.2); }
@@ -252,7 +312,7 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 .stat-card__bar {
   margin-top: 0.6rem;
   height: 4px;
-  background: rgba(255,255,255,0.07);
+  background: rgba(128, 128, 128, 0.15);
   border-radius: 99px;
   overflow: hidden;
 }
@@ -304,7 +364,7 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   border-radius: 99px;
   font-size: 0.62rem; font-weight: 700; line-height: 1;
 }
-.filter-badge--all     { background: rgba(99, 130, 180, 0.18); color: var(--clr-text-2); }
+.filter-badge--all      { background: rgba(99, 130, 180, 0.18); color: var(--clr-text-2); }
 .filter-badge--pending  { background: rgba(245, 158, 11, 0.18); color: var(--clr-pending); }
 .filter-badge--progress { background: rgba(79, 142, 247, 0.18); color: var(--clr-progress); }
 .filter-badge--done     { background: rgba(52, 211, 153, 0.18); color: var(--clr-done); }
@@ -328,7 +388,7 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   display: flex; flex-direction: column;
   gap: 1.1rem;
   min-height: 300px;
-  transition: border-color 0.2s, background 0.2s;
+  transition: border-color 0.2s, background 0.35s ease;
 }
 .column--active { border-color: rgba(79, 142, 247, 0.2); }
 .column--drag-over { border-color: rgba(79, 142, 247, 0.55); background: rgba(79, 142, 247, 0.05); }
@@ -360,13 +420,13 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   padding: 1.1rem;
   display: flex; flex-direction: column; gap: 0.75rem;
   cursor: grab;
-  transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s, opacity 0.2s;
+  transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s, opacity 0.2s, background 0.35s ease;
   animation: slideIn 0.25s ease both;
 }
 .task-card:hover {
   transform: translateY(-2px);
   border-color: rgba(99, 130, 180, 0.22);
-  box-shadow: 0 8px 32px rgba(0,0,0,0.25);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.12);
 }
 .task-card--dragging { opacity: 0.35; transform: scale(0.97); cursor: grabbing; }
 .task-card[data-status="progress"] { border-left: 3px solid var(--clr-primary); }
@@ -400,13 +460,14 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   border: 2px solid var(--clr-surface-2);
   display: flex; align-items: center; justify-content: center;
   font-size: 0.58rem; font-weight: 700; letter-spacing: 0.03em;
+  color: #fff;
   margin-left: -6px;
 }
 .avatar:first-child { margin-left: 0; }
 .task-card__due { display: flex; align-items: center; gap: 0.3rem; font-size: 0.72rem; color: var(--clr-text-3); }
 .due-icon { font-size: 0.8rem; }
 .task-card__progress { display: flex; align-items: center; gap: 0.6rem; }
-.progress-bar { flex: 1; height: 4px; background: rgba(255,255,255,0.06); border-radius: 99px; overflow: hidden; }
+.progress-bar { flex: 1; height: 4px; background: rgba(128,128,128,0.12); border-radius: 99px; overflow: hidden; }
 .progress-bar__fill {
   height: 100%; border-radius: 99px;
   background: linear-gradient(90deg, var(--clr-primary), var(--clr-accent));
@@ -445,6 +506,7 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   justify-content: center;
   padding: 1rem;
 }
+body.theme-light .modal-overlay { background: rgba(15, 23, 42, 0.5); }
 .modal-overlay--open { display: flex; }
 .modal {
   background: var(--clr-surface);
@@ -500,7 +562,7 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   font-size: 0.875rem;
   padding: 0.6rem 0.85rem;
   outline: none;
-  transition: border-color 0.2s, box-shadow 0.2s;
+  transition: border-color 0.2s, box-shadow 0.2s, background 0.35s ease;
   width: 100%;
 }
 .form-input::placeholder { color: var(--clr-text-3); }
@@ -515,7 +577,7 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   padding-right: 2.2rem;
   cursor: pointer;
 }
-.form-select option { background: #1a2236; }
+.form-select option { background: var(--clr-surface-2); color: var(--clr-text-1); }
 .form-error { font-size: 0.72rem; color: #f87171; display: none; }
 
 /* --- Botão ghost ------------------------------------------- */
